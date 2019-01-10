@@ -156,7 +156,7 @@ class SimpleRoseBot(object):
                 break
         self.stop()
 
-    
+
 
 ###############################################################################
 # The  Motor   and   ColorSensor classes.  USE them, but do NOT modify them.
