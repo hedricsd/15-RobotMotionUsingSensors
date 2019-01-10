@@ -4,8 +4,8 @@ wait-until-event pattern, in the context of robot motion that uses sensors.
 
 Authors: David Mutchler, Vibha Alangar, Matt Boutell, Dave Fisher,
          Mark Hays, Amanda Stouder, Aaron Wilkin, their colleagues,
-         and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         and Sam Hedrick.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import ev3dev.ev3 as ev3
 import time
@@ -51,7 +51,13 @@ def wait_for_seconds():
     #   NOTE: this function has nothing to do with robots,
     #   but its concepts will be useful in the forthcoming robot exercises.
     # -------------------------------------------------------------------------
-
+    print('Hello')
+    start = time.time()
+    while True:
+        current = time.time()
+        if current - start >= 3:
+            break
+    print('Goodbye')
 
 def run_test_init():
     """ Tests the   __init__   method of the SimpleRoseBot class. """
@@ -63,7 +69,7 @@ def run_test_init():
     # TODO: 3. Implement this function, then implement the   __init__   method
     #   of the SimpleRoseBot class, then use this function to test __init__.
     # -------------------------------------------------------------------------
-
+    SimpleRoseBot()
 
 def run_test_go_and_stop():
     """ Tests the   go   and   stop   methods of the SimpleRoseBot class. """
@@ -76,6 +82,10 @@ def run_test_go_and_stop():
     #   methods of the SimpleRoseBot class, then use this function
     #   to test both   go   and   stop   at the same time.
     # -------------------------------------------------------------------------
+    robot = SimpleRoseBot()
+    robot.go(90, 70)
+    wait_for_seconds()
+    robot.stop()
 
 
 def run_test_go_straight_for_seconds():
@@ -89,7 +99,8 @@ def run_test_go_straight_for_seconds():
     #   go_straight_for_seconds   method of the SimpleRoseBot class,
     #   then use this function to test that method.
     # -------------------------------------------------------------------------
-
+    robot = SimpleRoseBot()
+    robot.go_straight_for_seconds(8, 40)
 
 def run_test_go_straight_for_inches():
     """ Tests the   go_straight_for_inches   method of SimpleRoseBot. """
@@ -121,7 +132,31 @@ def run_test_go_straight_until_black():
 # Put your   SimpleRoseBot    class here (below this comment).
 # Your instructor may help you get started.
 ###############################################################################
+class SimpleRoseBot(object):
 
+    def __init__(self):
+        self.left_motor = Motor('B')
+        self.right_motor = Motor('C')
+        self.color_sensor = ColorSensor(3)
+
+    def go(self, left_wheel_speed, right_wheel_speed):
+        self.left_motor.turn_on(left_wheel_speed)
+        self.right_motor.turn_on(right_wheel_speed)
+
+    def stop(self):
+        self.left_motor.turn_off()
+        self.right_motor.turn_off()
+
+    def go_straight_for_seconds(self, seconds, speed):
+        start = time.time()
+        self.go(speed, speed)
+        while True:
+            current = time.time()
+            if current - start >= seconds:
+                break
+        self.stop()
+
+    
 
 ###############################################################################
 # The  Motor   and   ColorSensor classes.  USE them, but do NOT modify them.
